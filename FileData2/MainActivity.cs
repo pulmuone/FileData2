@@ -41,8 +41,8 @@ namespace FileData2
                 albumIntent.SetType("image/*");
                 albumIntent.PutExtra(Intent.ExtraAllowMultiple, true);
                 albumIntent.PutExtra(Intent.ExtraMimeTypes, "image/*");
-                StartActivityForResult(albumIntent, 0);
-                //StartActivityForResult(Intent.CreateChooser(albumIntent, "Select Picture"), 0);
+                //StartActivityForResult(albumIntent, 0);
+                StartActivityForResult(Intent.CreateChooser(albumIntent, "Select Picture"), 0);
             };
 
         }

@@ -37,6 +37,7 @@ namespace FileData2
             btn1.Click += (object sender, System.EventArgs e) =>
             {
                 Intent albumIntent = new Intent(Intent.ActionPick, MediaStore.Images.Media.ExternalContentUri);
+                //Intent albumIntent = new Intent(Intent.ActionGetContent);
                 //albumIntent.AddCategory(Intent.CategoryOpenable);
                 albumIntent.SetType("image/*");
                 albumIntent.PutExtra(Intent.ExtraAllowMultiple, true);
@@ -57,6 +58,8 @@ namespace FileData2
                 if(data != null)
                 {
                     ClipData clipData = data.ClipData;
+
+                    if (clipData == null) return;
 
                     System.Console.WriteLine(clipData.ItemCount);
 

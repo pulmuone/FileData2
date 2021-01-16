@@ -58,6 +58,15 @@ namespace FileData2
                 //StartActivityForResult(Intent.CreateChooser(albumIntent, "Select Picture"), 0);
             };
 
+            var btn3 = FindViewById<Button>(Resource.Id.button3);
+            btn3.Click += (object sender, System.EventArgs e) =>
+            {
+                Intent albumIntent = new Intent(Intent.ActionOpenDocumentTree);
+                StartActivityForResult(albumIntent, 0);
+                //StartActivityForResult(Intent.CreateChooser(albumIntent, "Select Picture"), 0);
+            };
+
+
         }
 
 

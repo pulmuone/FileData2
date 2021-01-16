@@ -49,15 +49,14 @@ namespace FileData2
             var btn2 = FindViewById<Button>(Resource.Id.button2);
             btn2.Click += (object sender, System.EventArgs e) =>
             {
-                //Intent albumIntent = new Intent(Intent.ActionOpenDocument);
-                Intent albumIntent = new Intent(Intent.ActionGetContent);
-
-                //albumIntent.AddCategory(Intent.CategoryOpenable);
+                Intent albumIntent = new Intent(Intent.ActionOpenDocument);
+                //Intent albumIntent = new Intent(Intent.ActionGetContent);
+                albumIntent.AddCategory(Intent.CategoryOpenable);
                 albumIntent.SetType("image/*");
                 albumIntent.PutExtra(Intent.ExtraAllowMultiple, true);
                 albumIntent.PutExtra(Intent.ExtraMimeTypes, new string[] { "image/*" });
-                //StartActivityForResult(albumIntent, 0);
-                StartActivityForResult(Intent.CreateChooser(albumIntent, "Select Picture"), 0);
+                StartActivityForResult(albumIntent, 0);
+                //StartActivityForResult(Intent.CreateChooser(albumIntent, "Select Picture"), 0);
             };
         }
 

@@ -9,6 +9,8 @@ using Android;
 using AndroidX.Core.App;
 using Android.Provider;
 using Android.Graphics;
+using System.Collections.Generic;
+using Android.Util;
 
 namespace FileData2
 {
@@ -58,6 +60,7 @@ namespace FileData2
                 StartActivityForResult(albumIntent, 0);
                 //StartActivityForResult(Intent.CreateChooser(albumIntent, "Select Picture"), 0);
             };
+
         }
 
 
@@ -69,43 +72,54 @@ namespace FileData2
             {
                 if(data != null)
                 {
-                    ClipData clipData = data.ClipData;
-
-                    if (clipData == null) return;
-
-                    System.Console.WriteLine(clipData.ItemCount);
-
-                    for (int i = 0; i < clipData.ItemCount; i++)
+                    if (data.ClipData != null)
                     {
-                        ClipData.Item item = clipData.GetItemAt(i);
+                        ClipData clipData = data.ClipData;
 
-                        var uri = item.Uri;
+                        if (clipData == null) return;
 
-                        if (Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Q)
+                        System.Console.WriteLine(clipData.ItemCount);
+
+                        for (int i = 0; i < clipData.ItemCount; i++)
                         {
-                            var source = ImageDecoder.CreateSource(this.ContentResolver, uri);
-                            var bitmap = ImageDecoder.DecodeBitmap(source);
-                            imageview.SetImageBitmap(bitmap);
-                        }
-                        else
-                        {
-                            var cursor = this.ContentResolver.Query(uri, null, null, null, null);
-                            if (cursor != null)
-                            {
-                                cursor.MoveToNext();
-                                // 이미지 경로를 가져온다.
-                                var index = cursor.GetColumnIndex(MediaStore.Images.Media.InterfaceConsts.Data);
-                                var source = cursor.GetString(index);
-                                // 이미지를 생성한다.
-                                var bitmap = BitmapFactory.DecodeFile(source);
-                                imageview.SetImageBitmap(bitmap);
-                            }
+                            ClipData.Item item = clipData.GetItemAt(i);
 
+                            var uri = item.Uri;
+                            ImagePrint(uri);
                         }
-
+                    }
+                    else if(data.Data != null)
+                    {
+                        Android.Net.Uri uri = data.Data;
+                        ImagePrint(uri);
                     }
 
                 }
+            }
+        }
+
+        private void ImagePrint(Android.Net.Uri uri)
+        {
+            if (Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Q)
+            {
+                var source = ImageDecoder.CreateSource(this.ContentResolver, uri);
+                var bitmap = ImageDecoder.DecodeBitmap(source);
+                imageview.SetImageBitmap(bitmap);
+            }
+            else
+            {
+                var cursor = this.ContentResolver.Query(uri, null, null, null, null);
+                if (cursor != null)
+                {
+                    cursor.MoveToNext();
+                    // 이미지 경로를 가져온다.
+                    var index = cursor.GetColumnIndex(MediaStore.Images.Media.InterfaceConsts.Data);
+                    var source = cursor.GetString(index);
+                    // 이미지를 생성한다.
+                    var bitmap = BitmapFactory.DecodeFile(source);
+                    imageview.SetImageBitmap(bitmap);
+                }
+
             }
         }
 
@@ -115,5 +129,6 @@ namespace FileData2
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+       
     }
 }

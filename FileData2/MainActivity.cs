@@ -104,6 +104,7 @@ namespace FileData2
                         List<Android.Net.Uri> photoList = new List<Android.Net.Uri>();
                         Android.Net.Uri uri = data.Data;
                         //ImagePrint(uri);
+                        photoList.Add(uri);
                         listView.Adapter = new MyCustomListAdapter(photoList);
                     }
 

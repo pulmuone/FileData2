@@ -51,12 +51,12 @@ namespace FileData2
             var btn2 = FindViewById<Button>(Resource.Id.button2);
             btn2.Click += (object sender, System.EventArgs e) =>
             {
-                Intent albumIntent = new Intent(Intent.ActionOpenDocument);
-                //Intent albumIntent = new Intent(Intent.ActionGetContent);
-                albumIntent.AddCategory(Intent.CategoryOpenable);
+                Intent albumIntent = new Intent(Intent.ActionGetContent);
+                //Intent albumIntent = new Intent(Intent.ActionOpenDocumentTree);
+                //albumIntent.AddCategory(Intent.CategoryOpenable);
                 albumIntent.SetType("image/*");
                 albumIntent.PutExtra(Intent.ExtraAllowMultiple, true);
-                albumIntent.PutExtra(Intent.ExtraMimeTypes, new string[] { "image/*" });
+                //albumIntent.PutExtra(Intent.ExtraMimeTypes, new string[] { "image/*" });
                 StartActivityForResult(albumIntent, 0);
                 //StartActivityForResult(Intent.CreateChooser(albumIntent, "Select Picture"), 0);
             };
@@ -108,17 +108,27 @@ namespace FileData2
             }
             else
             {
-                var cursor = this.ContentResolver.Query(uri, null, null, null, null);
-                if (cursor != null)
-                {
-                    cursor.MoveToNext();
-                    // 이미지 경로를 가져온다.
-                    var index = cursor.GetColumnIndex(MediaStore.Images.Media.InterfaceConsts.Data);
-                    var source = cursor.GetString(index);
-                    // 이미지를 생성한다.
-                    var bitmap = BitmapFactory.DecodeFile(source);
-                    imageview.SetImageBitmap(bitmap);
-                }
+                imageview.SetImageURI(uri);
+
+                //string[] proj = { MediaStore.Images.Media.InterfaceConsts.Data };
+                //var cursor = this.ContentResolver.Query(uri, null, null, null, null);
+
+                //if (cursor != null)
+                //{
+                //    cursor.MoveToNext();
+                //    // 이미지 경로를 가져온다.
+                //    var index = cursor.GetColumnIndexOrThrow(MediaStore.Images.Media.InterfaceConsts.Id);
+                //    var idColumn = cursor.GetColumnIndexOrThrow(MediaStore.Images.Media.InterfaceConsts.Id);
+
+                //    long id = cursor.GetLong(idColumn);
+                //    var source = cursor.GetString(index);
+
+                //    var contentUri = ContentUris.WithAppendedId(MediaStore.Images.Media.ExternalContentUri, id);
+
+                //    // 이미지를 생성한다.
+                //    var bitmap = BitmapFactory.DecodeFile(source);
+                //    imageview.SetImageBitmap(bitmap);
+                //}
 
             }
         }

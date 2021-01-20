@@ -17,6 +17,8 @@ namespace FileData2
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
+        ListView listView;
+
         static string[] PERMISSIONS = {
             Manifest.Permission.ReadExternalStorage,
             Manifest.Permission.AccessMediaLocation
@@ -33,7 +35,8 @@ namespace FileData2
 
             ActivityCompat.RequestPermissions(this, PERMISSIONS, 0);
             
-            imageview = FindViewById<ImageView>(Resource.Id.imageView1);
+            //imageview = FindViewById<ImageView>(Resource.Id.imageView1);
+            listView = FindViewById<ListView>(Resource.Id.listView1);
 
             var btn1 = FindViewById<Button>(Resource.Id.button1);
             btn1.Click += (object sender, System.EventArgs e) =>
@@ -51,7 +54,8 @@ namespace FileData2
             var btn2 = FindViewById<Button>(Resource.Id.button2);
             btn2.Click += (object sender, System.EventArgs e) =>
             {
-                Intent albumIntent = new Intent(Intent.ActionGetContent);
+                //Intent albumIntent = new Intent(Intent.ActionGetContent);
+                Intent albumIntent = new Intent(Intent.ActionOpenDocument);
                 //albumIntent.SetType(MediaStore.Images.Media.ContentType);
                 //Intent albumIntent = new Intent(Intent.ActionOpenDocumentTree);
                 //albumIntent.AddCategory(Intent.CategoryOpenable);
@@ -81,18 +85,26 @@ namespace FileData2
 
                         System.Console.WriteLine(clipData.ItemCount);
 
+                        List<Android.Net.Uri> photoList = new List<Android.Net.Uri>();
+
                         for (int i = 0; i < clipData.ItemCount; i++)
                         {
                             ClipData.Item item = clipData.GetItemAt(i);
 
                             var uri = item.Uri;
-                            ImagePrint(uri);
+                            //ImagePrint(uri);
+                            photoList.Add(uri);
                         }
+
+                        listView.Adapter = new MyCustomListAdapter(photoList);
+
                     }
                     else if(data.Data != null)
                     {
+                        List<Android.Net.Uri> photoList = new List<Android.Net.Uri>();
                         Android.Net.Uri uri = data.Data;
-                        ImagePrint(uri);
+                        //ImagePrint(uri);
+                        listView.Adapter = new MyCustomListAdapter(photoList);
                     }
 
                 }
